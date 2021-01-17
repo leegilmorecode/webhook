@@ -8,6 +8,7 @@
     "deploy:local": "sls deploy --stage local --force",
     "deploy:prod": "sls deploy --stage production --force",
     "remove:local": "sls remove --stage local --force",
+    "remove:prod": "sls remove --stage production --force",
     "test": "jest",
     "test:watch": "jest --watch"
   },

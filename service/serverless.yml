@@ -6,8 +6,18 @@ provider:
   lambdaHashingVersion: 20201221
   stage: dev
   region: eu-west-1
+  environment:
+    JOB_TABLE: ${self:custom.tableName}
   apiGateway:
     shouldStartNameWithService: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+      Resource:
+        - { "Fn::GetAtt": ["JobDynamoDBTable", "Arn"] }
 plugins:
   - serverless-webpack
   - serverless-localstack
@@ -27,6 +37,7 @@ functions:
           path: webhook
           method: post
 custom:
+  tableName: "jobs"
   defaultStage: local
   profile: default
   webpack:
@@ -41,3 +52,22 @@ custom:
       - dev
       - local
     debug: true
+resources:
+  Resources:
+    JobDynamoDBTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: JobId
+            AttributeType: S
+          - AttributeName: ProviderId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: JobId
+            KeyType: HASH
+          - AttributeName: ProviderId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableName}
