@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "e837116c-18e1-424d-bce5-cc28702e7c1d",
+		"name": "webhook",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST Webhook",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"providers\": [\"gas\"],\n    \"callbackUrl\": \"http://something/complete\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4566/restapis/2n1j6hu8sr/local/_user_request_/webhook",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4566",
+					"path": [
+						"restapis",
+						"2n1j6hu8sr",
+						"local",
+						"_user_request_",
+						"webhook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Complete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jobId\": \"123\",\n    \"data\": {\n        \"something\": \"something\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4566/restapis/2n1j6hu8sr/local/_user_request_/complete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4566",
+					"path": [
+						"restapis",
+						"2n1j6hu8sr",
+						"local",
+						"_user_request_",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
