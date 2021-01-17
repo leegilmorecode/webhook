@@ -1,0 +1,43 @@
+service: service
+frameworkVersion: "2"
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  stage: dev
+  region: eu-west-1
+  apiGateway:
+    shouldStartNameWithService: true
+plugins:
+  - serverless-webpack
+  - serverless-localstack
+package:
+  individually: true
+functions:
+  complete:
+    handler: src/functions/complete/complete.handler
+    events:
+      - http:
+          path: complete
+          method: post
+  webhook:
+    handler: src/functions/webhook/webhook.handler
+    events:
+      - http:
+          path: webhook
+          method: post
+custom:
+  defaultStage: local
+  profile: default
+  webpack:
+    webpackConfig: "webpack.config.js"
+    includeModules: true
+    excludeFiles: src/**/*.test.js
+  localstack:
+    host: http://localhost
+    endpointFile: localstack_endpoints.json
+    edgePort: 4566
+    stages:
+      - dev
+      - local
+    debug: true

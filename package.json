@@ -1,0 +1,15 @@
+{
+  "name": "webhook",
+  "private": true,
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean",
+    "start": "lerna run start --stream",
+    "build": "lerna run build --stream",
+    "test": "lerna run test --stream",
+    "test:watch": "lerna run test:watch --stream"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}
