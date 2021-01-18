@@ -7,9 +7,11 @@ describe("complete-schema", () => {
   beforeEach(() => {
     item = {
       jobId: "123",
-      data: {
-        something: "something",
-      },
+      data: [
+        {
+          something: "something",
+        },
+      ],
     };
   });
 
@@ -73,7 +75,7 @@ describe("complete-schema", () => {
         validate(item, schema);
       }
 
-      expect(invalid).toThrowError("Invalid: data/data should be object");
+      expect(invalid).toThrowError("Invalid: data/data should be array");
     });
   });
 });

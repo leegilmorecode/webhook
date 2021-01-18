@@ -8,7 +8,7 @@ export const schema = {
       type: "string",
     },
     data: {
-      type: "object",
+      type: "array",
     },
   },
 };

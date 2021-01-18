@@ -15,31 +15,26 @@ function randomFailuresMiddleware(_, res, next) {
   next();
 }
 
-const createLambda = async (event, context) => {
-  const app = express();
-  const port = 3000;
+const app = express();
+const port = 3000;
+app.use(awsServerlessExpressMiddleware.eventContext());
 
-  app.use(awsServerlessExpressMiddleware.eventContext());
+// app.use(randomFailuresMiddleware);
+app.use(cors());
+app.options("*", cors());
 
-  app.use(randomFailuresMiddleware);
-  app.use(cors());
-  app.options("*", cors());
+app.get("/providers/:id", (req, res) => {
+  const bills = providers[req.params.id];
+  if (!bills) return res.status(404).end();
+  res.send(bills);
+});
 
-  app.get("/providers/:id", (req, res) => {
-    const bills = providers[req.params.id];
-    if (!bills) return res.status(404).end();
-    res.send(bills);
-  });
+app.listen(port, () =>
+  console.log(`Providers server listening at http://localhost:${port}`)
+);
 
-  app.listen(port, () =>
-    console.log(`Providers server listening at http://localhost:${port}`)
-  );
-
-  const server = awsServerlessExpress.createServer(app);
-
-  awsServerlessExpress.proxy(server, event, context);
-};
+const server = awsServerlessExpress.createServer(app);
 
 exports.handler = (event, context) => {
-  createLambda(event, context);
+  awsServerlessExpress.proxy(server, event, context);
 };

@@ -4,6 +4,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
+  memorySize: 256
   stage: dev
   region: eu-west-1
   environment:
@@ -15,7 +16,7 @@ plugins:
 package:
   individually: true
 functions:
-  complete:
+  server:
     handler: src/server.handler
     timeout: 30
     events:

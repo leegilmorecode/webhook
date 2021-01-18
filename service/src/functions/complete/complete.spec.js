@@ -9,7 +9,14 @@ describe("complete", () => {
       },
       body: JSON.stringify(
         {
-          message: "stubbed complete handler",
+          message: {
+            jobId: "123",
+            data: [
+              {
+                something: "something",
+              },
+            ],
+          },
         },
         null,
         2
@@ -18,9 +25,11 @@ describe("complete", () => {
     const event = {
       body: JSON.stringify({
         jobId: "123",
-        data: {
-          something: "something",
-        },
+        data: [
+          {
+            something: "something",
+          },
+        ],
       }),
     };
     const result = await handler(event);

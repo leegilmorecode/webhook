@@ -13,7 +13,7 @@ export const handler = async ({ body }) => {
       },
       body: JSON.stringify(
         {
-          message: "stubbed complete handler",
+          message: payload,
         },
         null,
         2

@@ -4,11 +4,13 @@ provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
+  memorySize: 256
   stage: dev
   region: eu-west-1
   environment:
     JOB_TABLE: ${self:custom.tableName}
     STAGE: ${opt:stage, self:provider.stage}
+    SERVICE_ENDPOINT: "https://6u9zyr5fob.execute-api.eu-west-1.amazonaws.com/production/providers/"
   apiGateway:
     shouldStartNameWithService: true
   iamRoleStatements:
@@ -19,6 +21,11 @@ provider:
         - dynamodb:UpdateItem
       Resource:
         - { "Fn::GetAtt": ["JobDynamoDBTable", "Arn"] }
+        - Fn::Join:
+            - ""
+            - - { "Fn::GetAtt": ["JobDynamoDBTable", "Arn"] }
+              - "/"
+              - "index/*"
 plugins:
   - serverless-webpack
   - serverless-localstack
@@ -39,6 +46,9 @@ functions:
       - http:
           path: webhook
           method: post
+  processor:
+    handler: src/functions/processor/processor.handler
+    timeout: 30
 custom:
   tableName: "jobs"
   defaultStage: local
@@ -67,6 +77,8 @@ resources:
             AttributeType: S
           - AttributeName: providerId
             AttributeType: S
+          - AttributeName: status
+            AttributeType: S
         KeySchema:
           - AttributeName: jobId
             KeyType: HASH
@@ -76,3 +88,13 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.tableName}
+        GlobalSecondaryIndexes:
+          - IndexName: StatusIndex
+            KeySchema:
+              - AttributeName: status
+                KeyType: HASH
+            Projection:
+              ProjectionType: "ALL"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
