@@ -90,3 +90,11 @@ AWS LocalStack has been configured for testing locally using the steps above onc
 ```
 npm run start
 ```
+
+### Todo
+
+- [x] Configure CloudWatch event
+- [ ] Add logging package
+- [ ] Add custom error
+- [ ] Add lambda handler for correct status codes
+- [ ] Add auth headers
