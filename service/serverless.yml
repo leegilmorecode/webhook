@@ -8,6 +8,7 @@ provider:
   region: eu-west-1
   environment:
     JOB_TABLE: ${self:custom.tableName}
+    STAGE: ${opt:stage, self:provider.stage}
   apiGateway:
     shouldStartNameWithService: true
   iamRoleStatements:
@@ -26,12 +27,14 @@ package:
 functions:
   complete:
     handler: src/functions/complete/complete.handler
+    timeout: 30
     events:
       - http:
           path: complete
           method: post
   webhook:
     handler: src/functions/webhook/webhook.handler
+    timeout: 30
     events:
       - http:
           path: webhook
@@ -42,7 +45,9 @@ custom:
   profile: default
   webpack:
     webpackConfig: "webpack.config.js"
-    includeModules: true
+    includeModules:
+      forceExclude:
+        - aws-sdk
     excludeFiles: src/**/*.test.js
   localstack:
     host: http://localhost
@@ -58,14 +63,14 @@ resources:
       Type: "AWS::DynamoDB::Table"
       Properties:
         AttributeDefinitions:
-          - AttributeName: JobId
+          - AttributeName: jobId
             AttributeType: S
-          - AttributeName: ProviderId
+          - AttributeName: providerId
             AttributeType: S
         KeySchema:
-          - AttributeName: JobId
+          - AttributeName: jobId
             KeyType: HASH
-          - AttributeName: ProviderId
+          - AttributeName: providerId
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1

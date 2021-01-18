@@ -19,6 +19,7 @@ services:
       - HOST_TMP_FOLDER=${TMPDIR}
       - DEFAULT_REGION=eu-west-1
       - LAMBDA_REMOTE_DOCKER=false
+      - LOCALSTACK_HOSTNAME=${LOCALSTACK_HOSTNAME- }
     volumes:
       - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
