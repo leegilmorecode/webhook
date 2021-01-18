@@ -69,6 +69,20 @@ Any failed records will be picked up on the next run of the processing lambda.
 
 5. Populate the provided postman collections using the generated endpoints (_postman/webhook production.postman_collection.json_)
 
+## Running the webhook
+
+1. Once setup (_above_) call the webhook endpoint using Postman
+
+![webhook call](docs/images/webhook-call.png)
+
+2. The relevant jobs will be populated in the DynamoDB table with the same Job ID (aggregated)
+
+![pending records](docs/images/pending-records.png)
+
+3. The lambda will run periodically to process the records in the database (_The callback URL will be notified of the data event_)
+
+![complete records](docs/images/complete-records.png)
+
 ## Deploy Local
 
 AWS LocalStack has been configured for testing locally using the steps above once the docker image is running using the following command in the services folder:

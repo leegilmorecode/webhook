@@ -10,7 +10,7 @@ provider:
   environment:
     JOB_TABLE: ${self:custom.tableName}
     STAGE: ${opt:stage, self:provider.stage}
-    SERVICE_ENDPOINT: "https://6u9zyr5fob.execute-api.eu-west-1.amazonaws.com/production/providers/"
+    SERVICE_ENDPOINT: "https://gkesj8umfc.execute-api.eu-west-1.amazonaws.com/production/providers/"
   apiGateway:
     shouldStartNameWithService: true
   iamRoleStatements:
