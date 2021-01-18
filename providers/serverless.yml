@@ -1,0 +1,33 @@
+service: providers
+frameworkVersion: "2"
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  stage: dev
+  region: eu-west-1
+  environment:
+    STAGE: ${opt:stage, self:provider.stage}
+  apiGateway:
+    shouldStartNameWithService: true
+plugins:
+  - serverless-localstack
+package:
+  individually: true
+functions:
+  complete:
+    handler: src/server.handler
+    timeout: 30
+    events:
+      - http: ANY /
+      - http: "ANY {proxy+}"
+custom:
+  defaultStage: local
+  profile: default
+  localstack:
+    host: http://localhost
+    edgePort: 4566
+    stages:
+      - dev
+      - local
+    debug: true

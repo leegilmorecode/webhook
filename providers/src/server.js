@@ -1,7 +1,8 @@
+const awsServerlessExpress = require("aws-serverless-express");
+const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const express = require("express");
+const cors = require("cors");
 const providers = require("./providers.json");
-const app = express();
-const port = 3000;
 
 const FAILURE_PROBABILITY = 0.5;
 
@@ -14,14 +15,31 @@ function randomFailuresMiddleware(_, res, next) {
   next();
 }
 
-app.use(randomFailuresMiddleware);
+const createLambda = async (event, context) => {
+  const app = express();
+  const port = 3000;
 
-app.get("/providers/:id", (req, res) => {
-  const bills = providers[req.params.id];
-  if (!bills) return res.status(404).end();
-  res.send(bills);
-});
+  app.use(awsServerlessExpressMiddleware.eventContext());
 
-app.listen(port, () =>
-  console.log(`Providers server listening at http://localhost:${port}`)
-);
+  app.use(randomFailuresMiddleware);
+  app.use(cors());
+  app.options("*", cors());
+
+  app.get("/providers/:id", (req, res) => {
+    const bills = providers[req.params.id];
+    if (!bills) return res.status(404).end();
+    res.send(bills);
+  });
+
+  app.listen(port, () =>
+    console.log(`Providers server listening at http://localhost:${port}`)
+  );
+
+  const server = awsServerlessExpress.createServer(app);
+
+  awsServerlessExpress.proxy(server, event, context);
+};
+
+exports.handler = (event, context) => {
+  createLambda(event, context);
+};

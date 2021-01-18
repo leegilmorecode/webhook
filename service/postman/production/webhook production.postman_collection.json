@@ -20,10 +20,42 @@
 					}
 				},
 				"url": {
-					"raw": "https://mjg39qpwh0.execute-api.eu-west-1.amazonaws.com/production/webhook",
+					"raw": "https://4779c49ep8.execute-api.eu-west-1.amazonaws.com/production/webhook",
 					"protocol": "https",
 					"host": [
-						"mjg39qpwh0",
+						"4779c49ep8",
+						"execute-api",
+						"eu-west-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"production",
+						"webhook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Providers",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"providers\": [\"gas\"],\n    \"callbackUrl\": \"http://something/complete\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://4779c49ep8.execute-api.eu-west-1.amazonaws.com/production/webhook",
+					"protocol": "https",
+					"host": [
+						"4779c49ep8",
 						"execute-api",
 						"eu-west-1",
 						"amazonaws",
@@ -52,10 +84,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://mjg39qpwh0.execute-api.eu-west-1.amazonaws.com/production/complete",
+					"raw": "https://4779c49ep8.execute-api.eu-west-1.amazonaws.com/production/complete",
 					"protocol": "https",
 					"host": [
-						"mjg39qpwh0",
+						"4779c49ep8",
 						"execute-api",
 						"eu-west-1",
 						"amazonaws",

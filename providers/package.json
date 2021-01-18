@@ -4,11 +4,19 @@
   "description": "Mock APIs",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "TMPDIR=/private$TMPDIR docker-compose up -d",
+    "deploy:local": "sls deploy --stage local --force",
+    "deploy:prod": "sls deploy --stage production --force",
+    "remove:local": "sls remove --stage local --force",
+    "remove:prod": "sls remove --stage production --force"
   },
   "license": "ISC",
   "dependencies": {
+    "aws-serverless-express": "^3.4.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "serverless-localstack": "^0.4.28"
   }
 }

@@ -38,6 +38,42 @@
 			"response": []
 		},
 		{
+			"name": "GET Providers",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4566/restapis/6wmd5ene4i/local/_user_request_/providers/gas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4566",
+					"path": [
+						"restapis",
+						"6wmd5ene4i",
+						"local",
+						"_user_request_",
+						"providers",
+						"gas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "POST Complete",
 			"request": {
 				"method": "POST",
@@ -52,7 +88,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4566/restapis/2n1j6hu8sr/local/_user_request_/complete",
+					"raw": "http://localhost:4566/restapis/edahroq9h6/local/_user_request_/complete",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -60,7 +96,7 @@
 					"port": "4566",
 					"path": [
 						"restapis",
-						"2n1j6hu8sr",
+						"edahroq9h6",
 						"local",
 						"_user_request_",
 						"complete"
