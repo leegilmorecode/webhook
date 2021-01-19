@@ -4,6 +4,13 @@
 
 The following serverless web application processes 3rd-party APIs with the use of webhooks. As many 3rd-party services experience various issues including maintenance, temporary load issues etc, the process is asynchronous and will call back to the provided callbackUrl once it has recieved the data for the given job.
 
+- [Architecture](#Architecture)
+- [Setup](#Setup)
+- [Deploy Production](#Deploy-Production)
+- [Running Tests](#Running-Tests)
+- [Running the webhook](#Running-the-webhook)
+- [Deploy Local](#Deploy-Local)
+
 ## Architecture
 
 The serverless architecture is made up of two API Gateways, one for the service which contains the webhook, and one for the mock providers API.
@@ -71,6 +78,20 @@ Any failed records will be picked up on the next run of the processing lambda.
 
 5. Populate the provided postman collections using the generated endpoints (_postman/webhook production.postman_collection.json_)
 
+### Running Tests
+
+To run the unit tests go into the relevant service folder and run the following commands:
+
+```
+npm run test
+```
+
+or the following to actively watch the tests
+
+```
+npm run test:watch
+```
+
 ## Running the webhook
 
 1. Once setup (_above_) call the webhook endpoint using Postman
@@ -103,3 +124,4 @@ Use npm run deploy:local instead of npm run deploy:prod
 - [ ] Add lambda handler for correct status codes
 - [ ] Add auth headers
 - [ ] Add swaggers for the APIs
+- [ ] Improving basic logging
