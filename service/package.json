@@ -35,6 +35,8 @@
     "webpack-node-externals": "^2.5.2"
   },
   "dependencies": {
+    "@webhook/app-error": "^1.0.0",
+    "@webhook/logger": "^1.0.0",
     "@webhook/schema-validator": "^1.0.0",
     "aws-sdk": "^2.828.0",
     "axios": "^0.21.1",

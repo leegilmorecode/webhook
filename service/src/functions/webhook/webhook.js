@@ -1,13 +1,22 @@
 import AWS from "aws-sdk";
 import { v4 as uuid } from "uuid";
 import { validate } from "@webhook/schema-validator";
+import { initlogger } from "@webhook/logger";
 import { schema } from "./webhook.schema";
 import { processingStatus, awsConfigLocal, config } from "../../common";
 
+const logger = initlogger();
+
 export const handler = async ({ body }) => {
+  const METHOD = "webhook.handler";
+
   try {
+    logger.info(`${METHOD} - started`);
+
     const payload = JSON.parse(body);
     validate(payload, schema);
+
+    logger.info(`${METHOD} - payload: ${JSON.stringify(payload)}`);
 
     awsConfigLocal(config.stage);
 
@@ -28,10 +37,13 @@ export const handler = async ({ body }) => {
         },
       };
 
+      logger.info(`${METHOD} - job: ${JSON.stringify(params)}`);
+
       return dynamoDb.put(params).promise();
     });
 
     await Promise.all(promises);
+    logger.info(`${METHOD} - complete`);
 
     return {
       statusCode: 201,
@@ -41,6 +53,8 @@ export const handler = async ({ body }) => {
       body: JSON.stringify("Created"),
     };
   } catch (error) {
+    logger.error(`${METHOD} - error: ${error}`);
+
     return {
       statusCode: 500,
       headers: {

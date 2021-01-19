@@ -94,7 +94,7 @@ npm run start
 ### Todo
 
 - [x] Configure CloudWatch event
-- [ ] Add logging package
-- [ ] Add custom error
+- [x] Add custom error
+- [x] Add logging package
 - [ ] Add lambda handler for correct status codes
 - [ ] Add auth headers

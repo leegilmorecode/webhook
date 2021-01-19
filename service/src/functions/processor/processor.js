@@ -1,7 +1,11 @@
 import AWS from "aws-sdk";
 import axios from "axios";
+import { AppError, errorTypes, logLevels } from "@webhook/app-error";
+import { initlogger } from "@webhook/logger";
 import { processingStatus, awsConfigLocal, config } from "../../common";
 import { batchItemsOnKey } from "../../helpers";
+
+const logger = initlogger();
 
 awsConfigLocal(config.stage);
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
@@ -51,7 +55,12 @@ async function getData(item) {
     );
     return { ...item, data };
   } catch (error) {
-    throw new Error(`jobId: ${item.jobId} message: ${error.message}`);
+    throw new AppError(
+      `jobId: ${item.jobId} message: ${error.message}`,
+      error.message,
+      errorTypes.NOT_FOUND,
+      logLevels.ERROR
+    );
   }
 }
 
@@ -63,7 +72,12 @@ async function postData(item) {
     });
     return { ...item, response };
   } catch (error) {
-    throw new Error(`jobId: ${item.jobId} message: ${error.message}`);
+    throw new AppError(
+      `jobId: ${item.jobId} message: ${error.message}`,
+      error.message,
+      errorTypes.NOT_FOUND,
+      logLevels.ERROR
+    );
   }
 }
 
@@ -82,10 +96,15 @@ function processCallback(jobs) {
 }
 
 export const handler = async () => {
+  const METHOD = "processor.handler";
+
   try {
+    logger.info(`${METHOD} - started`);
+
     // get any pending jobs
     const { Items: items = [] } = await getPendingJobs();
     let batchedItems = batchItemsOnKey(items, "jobId");
+    logger.info(`${METHOD} - batched items: ${JSON.stringify(batchedItems)}`);
 
     const processJobPromises = Object.values(batchedItems).map((item) =>
       processJob(item)
@@ -93,6 +112,8 @@ export const handler = async () => {
 
     // process the job to get the relevant data
     const processJobresults = await Promise.allSettled(processJobPromises);
+    logger.info(`${METHOD} - processed jobs: ${processJobresults.length}`);
+
     const fulfilledJobs = processJobresults.filter(
       (item) => item.status === "fulfilled"
     );
@@ -105,6 +126,10 @@ export const handler = async () => {
     const processCallbackResults = await Promise.allSettled(
       processCallbackPromises
     );
+    logger.info(
+      `${METHOD} - processed callbacks: ${processCallbackResults.length}`
+    );
+
     const fulfilledCallbacks = processCallbackResults.filter(
       (item) => item.status === "fulfilled"
     );
@@ -114,7 +139,16 @@ export const handler = async () => {
       processedJob.value.data.map((job) => updateJob(job))
     );
     await Promise.all(updatePromises);
+
+    logger.info(`${METHOD} - complete`);
   } catch (error) {
-    throw error;
+    logger.error(`${METHOD} - error: ${error}`);
+
+    throw new AppError(
+      "Uncaught error",
+      error.message,
+      errorTypes.NOT_FOUND,
+      logLevels.ERROR
+    );
   }
 };

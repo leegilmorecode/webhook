@@ -1,11 +1,21 @@
 import { validate } from "@webhook/schema-validator";
+import { initlogger } from "@webhook/logger";
 import { schema } from "./complete.schema";
 
+const logger = initlogger();
+
 export const handler = async ({ body }) => {
+  const METHOD = "complete.handler";
+
   try {
+    logger.info(`${METHOD} - started`);
+
     const payload = JSON.parse(body);
     validate(payload, schema);
 
+    logger.info(`${METHOD} - payload: ${JSON.stringify(payload)}`);
+
+    logger.info(`${METHOD} - complete`);
     return {
       statusCode: 200,
       headers: {
@@ -20,6 +30,8 @@ export const handler = async ({ body }) => {
       ),
     };
   } catch (error) {
+    logger.error(`${METHOD} - error: ${error}`);
+
     return {
       statusCode: 500,
       headers: {
