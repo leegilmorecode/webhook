@@ -19,7 +19,7 @@ const app = express();
 const port = 3000;
 app.use(awsServerlessExpressMiddleware.eventContext());
 
-// app.use(randomFailuresMiddleware);
+app.use(randomFailuresMiddleware);
 app.use(cors());
 app.options("*", cors());
 

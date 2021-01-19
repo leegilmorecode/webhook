@@ -50,7 +50,7 @@ functions:
     handler: src/functions/processor/processor.handler
     timeout: 30
     events:
-      # will run every 10 mins on weekdays
+      # will run every 1 mins on weekdays
       - schedule: cron(0/1 * ? * MON-FRI *)
 custom:
   tableName: "jobs"

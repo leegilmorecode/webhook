@@ -118,6 +118,11 @@ export const handler = async () => {
       (item) => item.status === "fulfilled"
     );
 
+    const rejectedJobs = processJobresults.filter(
+      (item) => item.status === "rejected"
+    );
+    logger.error(`${METHOD} - rejected jobs: ${rejectedJobs.length}`);
+
     const processCallbackPromises = Object.values(fulfilledJobs).map((item) =>
       processCallback(item)
     );
@@ -133,6 +138,11 @@ export const handler = async () => {
     const fulfilledCallbacks = processCallbackResults.filter(
       (item) => item.status === "fulfilled"
     );
+    const rejectedCallbacks = processCallbackResults.filter(
+      (item) => item.status === "rejected"
+    );
+
+    logger.error(`${METHOD} - rejected callbacks: ${rejectedCallbacks.length}`);
 
     // for any successful callbacks update the database to be processed (along with the data)
     const updatePromises = fulfilledCallbacks.map((processedJob) =>

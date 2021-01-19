@@ -16,6 +16,8 @@ Any failed records will be picked up on the next run of the processing lambda.
 
 ![architecture](docs/images/cloud-architecture.png)
 
+**Note**: This is a contrived example to demonstrate the basic use of serverless technologies with a Lerna monorepo and shared packages (both JS and TypeScript). Security and architecture best practices have not been taken into account for the light demo.
+
 ## Setup
 
 ### Install
@@ -85,11 +87,13 @@ Any failed records will be picked up on the next run of the processing lambda.
 
 ## Deploy Local
 
-AWS LocalStack has been configured for testing locally using the steps above once the docker image is running using the following command in the services folder:
+AWS LocalStack has been configured for testing locally using the steps above once the docker image is running using the following command in the service folder:
 
 ```
 npm run start
 ```
+
+Use npm run deploy:local instead of npm run deploy:prod
 
 ### Todo
 
@@ -98,3 +102,4 @@ npm run start
 - [x] Add logging package
 - [ ] Add lambda handler for correct status codes
 - [ ] Add auth headers
+- [ ] Add swaggers for the APIs
